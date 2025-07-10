@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-heading {
+    @apply text-zinc-900 dark:text-white;
+  }
+}
