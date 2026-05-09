@@ -2,12 +2,18 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
+import { X } from "lucide-react";
 
 const EditUserModal = ({ isOpen, onClose, onUpdate, user }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
+  // Schema with translations
   const schema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    role: Yup.string().required("Select a role"),
+    name: Yup.string().required(t('Name is required')),
+    email: Yup.string().email(t('Invalid email')).required(t('Email is required')),
+    role: Yup.string().required(t('Select a role')),
   });
 
   if (!user) return null;
@@ -18,19 +24,30 @@ const EditUserModal = ({ isOpen, onClose, onUpdate, user }) => {
         <>
           <motion.div
             onClick={onClose}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center px-4"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
           >
-            <div className="w-full max-w-md bg-white dark:bg-zinc-800 p-4 sm:p-6 rounded-xl shadow-xl">
-              <h2 className="text-xl font-bold mb-4 text-zinc-900 dark:text-white">Edit User</h2>
+            <div className="w-full max-w-md bg-white dark:bg-zinc-800 p-6 rounded-2xl shadow-2xl">
+              {/* Header with close button */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+                  {t('Edit User')}
+                </h2>
+                <button
+                  onClick={onClose}
+                  className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400"
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
               <Formik
                 initialValues={{
@@ -41,60 +58,84 @@ const EditUserModal = ({ isOpen, onClose, onUpdate, user }) => {
                 validationSchema={schema}
                 onSubmit={(values) => {
                   onUpdate({ ...user, ...values });
-                  toast.success("User updated!");
+                  toast.success(t('User updated successfully!'));
                   onClose();
                 }}
               >
-                <Form className="space-y-4">
+                <Form className="space-y-5">
+                  {/* Name Field */}
                   <div>
-                    <label className="block text-sm mb-1 dark:text-white">Name</label>
+                    <label className="block text-sm font-medium mb-2 dark:text-white">
+                      {t('Name')}
+                    </label>
                     <Field
                       name="name"
-                      className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white"
-                      placeholder="Enter name"
+                      className="w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder={t('Enter name')}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
-                    <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
+                    <ErrorMessage 
+                      name="name" 
+                      component="div" 
+                      className="text-red-500 text-sm mt-1.5" 
+                    />
                   </div>
 
+                  {/* Email Field */}
                   <div>
-                    <label className="block text-sm mb-1 dark:text-white">Email</label>
+                    <label className="block text-sm font-medium mb-2 dark:text-white">
+                      {t('Email')}
+                    </label>
                     <Field
                       name="email"
                       type="email"
-                      className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white"
-                      placeholder="Enter email"
+                      className="w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder={t('Enter email')}
+                      dir="ltr" // Email hamesha LTR
                     />
-                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                    <ErrorMessage 
+                      name="email" 
+                      component="div" 
+                      className="text-red-500 text-sm mt-1.5" 
+                    />
                   </div>
 
+                  {/* Role Field */}
                   <div>
-                    <label className="block text-sm mb-1 dark:text-white">Role</label>
+                    <label className="block text-sm font-medium mb-2 dark:text-white">
+                      {t('Role')}
+                    </label>
                     <Field
                       as="select"
                       name="role"
-                      className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white"
+                      className="w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     >
-                      <option value="">Select role</option>
-                      <option value="Admin">Admin</option>
-                      <option value="Editor">Editor</option>
-                      <option value="Viewer">Viewer</option>
+                      <option value="">{t('Select role')}</option>
+                      <option value="Admin">{t('Admin')}</option>
+                      <option value="Editor">{t('Editor')}</option>
+                      <option value="Viewer">{t('Viewer')}</option>
                     </Field>
-                    <ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
+                    <ErrorMessage 
+                      name="role" 
+                      component="div" 
+                      className="text-red-500 text-sm mt-1.5" 
+                    />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
+                  {/* Buttons */}
+                  <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                     <button
                       type="button"
                       onClick={onClose}
-                      className="w-full sm:w-auto px-4 py-2 bg-gray-200 dark:bg-zinc-700 dark:text-white rounded-md"
+                      className="w-full sm:w-auto px-5 py-2.5 bg-gray-100 dark:bg-zinc-700 text-zinc-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-600 font-medium transition-colors"
                     >
-                      Cancel
+                      {t('Cancel')}
                     </button>
                     <button
                       type="submit"
-                      className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                      className="w-full sm:w-auto px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors shadow-lg shadow-green-500/30"
                     >
-                      Update User
+                      {t('Update User')}
                     </button>
                   </div>
                 </Form>

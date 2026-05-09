@@ -1,9 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* RTL + Font Setup */
+@layer base {
+  [dir="rtl"] {
+    font-family: 'Cairo', sans-serif;
+  }
+
+  [dir="ltr"] {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Smooth theme transitions */
+    * {
+    @apply transition-colors duration-200;
+  }
+
+  /* Remove transition for framer-motion elements */
+  [data-framer-motion] * {
+    transition: none !important;
+  }
+
+  /* Body RTL fix */
+  body {
+    @apply antialiased;
+  }
+}
 
 @layer utilities {
   .text-heading {
     @apply text-zinc-900 dark:text-white;
   }
+
+  /* RTL aware text alignment */
+  .text-start {
+    text-align: start;
+  }
+  
+  .text-end {
+    text-align: end;
+  }
+}
+
+/* Scrollbar RTL Support */
+@layer components {
+  /* Light mode scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-zinc-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-zinc-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500 dark:bg-zinc-500;
+  }
+
+  /* RTL scrollbar position */
+  [dir="rtl"] {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+
+  .dark[dir="rtl"] {
+    scrollbar-color: #555 #27272a;
+  }
+}
+
+/* Input number arrows remove */
+@layer base {
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+/* Selection color */
+::selection {
+  @apply bg-blue-500 text-white;
+}
+
+.dark ::selection {
+  @apply bg-blue-600 text-white;
+}
+
+/* Focus visible - accessibility */
+*:focus-visible {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-zinc-900;
+}
+
+/* Disable focus ring on mouse click */
+*:focus:not(:focus-visible) {
+  @apply outline-none ring-0;
 }
