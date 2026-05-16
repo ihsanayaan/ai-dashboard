@@ -1,3 +1,73 @@
+#  AI Admin Dashboard
+
+Modern AI-powered admin dashboard built with React.js, Tailwind CSS, ShadCN UI, and Recharts. Designed complete dashboard UI and reusable design system in Figma before frontend development.
+
+##  Live Demo
+🔗 https://ai-dashboard-omega-self.vercel.app/
+
+---
+
+#  Features
+
+- Modern admin dashboard UI
+- Interactive analytics charts
+- Responsive layouts
+- Reusable UI components
+- Clean design system
+- Dark mode interface
+- Dashboard cards and widgets
+- Data visualization
+- Mobile-friendly experience
+- Smooth user interactions
+
+---
+
+#  Tech Stack
+
+## Frontend
+- React.js
+- Tailwind CSS
+- JavaScript
+- ShadCN UI
+- Recharts
+
+## UI/UX
+- Figma
+- Dashboard Design
+- Responsive Design
+- Design System
+
+---
+
+#  Design Process
+
+The project workflow included:
+1. Dashboard wireframing
+2. UI system planning
+3. High-fidelity dashboard design in Figma
+4. Reusable component creation
+5. Responsive frontend implementation
+
+---
+
+#  Responsive Design
+
+Optimized for:
+- Mobile Devices
+- Tablets
+- Desktop Screens
+
+---
+Author
+Ihsan Ali
+Frontend Developer & UI/UX Designer
+
+#  Installation
+
+```bash
+npm install
+npm start
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
